@@ -22,4 +22,7 @@ fmt:
 	goimports -w . .
 	gofmt -w -s .
 
-
+# build
+build:
+	go build ws/*.go
+	go build *.go
