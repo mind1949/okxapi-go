@@ -12,7 +12,7 @@ import (
 
 // NewClient create okx api v5 client using websocket protocol
 func NewClient(url string, fns ...OptFn) (*Client, error) {
-	opts := newDefaultOPts()
+	opts := newDefaultOpts()
 	for _, fn := range fns {
 		fn(&opts)
 	}

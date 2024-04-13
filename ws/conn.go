@@ -27,7 +27,7 @@ const (
 // newConn new conn
 func newConn(ctx context.Context, baseURL string, path ChannelType, handler MessageHandler) (*conn, error) {
 	if handler == nil {
-		handler = messageHandler{}
+		handler = NoopMessageHandler{}
 	}
 	c := &conn{
 		baseURL: baseURL,
@@ -158,7 +158,7 @@ func (c *conn) consume(ctx context.Context) error {
 		}
 		switch msg.Event {
 		case "":
-			c.handler.HandlePushData(ctx, PushData[json.RawMessage, json.RawMessage]{
+			c.handler.HandlePushData(ctx, PushData[ChannelRawMessage, json.RawMessage]{
 				Arg:        msg.Arg,
 				Data:       msg.Data,
 				rawMessage: rawMsg,
@@ -172,8 +172,8 @@ func (c *conn) consume(ctx context.Context) error {
 }
 
 // message2Response
-func message2Response(msg message) Response[json.RawMessage] {
-	return Response[json.RawMessage]{
+func message2Response(msg message) Response[ChannelRawMessage] {
+	return Response[ChannelRawMessage]{
 		Event:  msg.Event,
 		Arg:    msg.Arg,
 		Code:   msg.Code,
@@ -235,7 +235,7 @@ type message struct {
 	// error
 	Event string `json:"event"`
 
-	Arg  json.RawMessage   `json:"arg"`
+	Arg  ChannelRawMessage `json:"arg"`
 	Data []json.RawMessage `json:"data"`
 	// Error code
 	Code string `json:"code"`

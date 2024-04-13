@@ -2,9 +2,9 @@ package ws
 
 import "encoding/json"
 
-var _ error = responseErr[any]{}
+var _ error = responseErr[Channel]{}
 
-type responseErr[T any] struct {
+type responseErr[T Channel] struct {
 	Response[T]
 }
 
@@ -17,7 +17,7 @@ func (r responseErr[T]) Error() string {
 }
 
 // Response Operation result
-type Response[T any] struct {
+type Response[T Channel] struct {
 	// Operation
 	// login
 	// subscribe
@@ -59,12 +59,12 @@ func (r Response[T]) GetRawMessage() []byte {
 }
 
 // MapResponse map input to output
-func MapResponse[T Channel](input Response[json.RawMessage]) (output Response[T], err error) {
+func MapResponse[T Channel](input Response[ChannelRawMessage]) (output Response[T], err error) {
 	output = Response[T]{
 		Event:  input.Event,
 		Code:   input.Code,
 		Msg:    input.Msg,
 		ConnId: input.ConnId,
 	}
-	return output, json.Unmarshal(input.Arg, &output.Arg)
+	return output, json.Unmarshal(input.Arg.RawMessage, &output.Arg)
 }

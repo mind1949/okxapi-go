@@ -1,15 +1,24 @@
 package ws
 
-import "errors"
+import (
+	"errors"
+)
 
 var _ Channel = TickersChannel{}
 
 // TickersChannel
+//
+// https://www.okx.com/docs-v5/en/#order-book-trading-market-data-ws-tickers-channel
 type TickersChannel struct {
 	// Channel name
 	Channel string `json:"channel,omitempty"`
 	// Instrument ID
 	InstId string `json:"instId"`
+}
+
+// GetChannel implement Channel interface
+func (t TickersChannel) GetChannel() (string, error) {
+	return t.Channel, nil
 }
 
 func (c TickersChannel) validate() error {

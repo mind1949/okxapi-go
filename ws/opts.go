@@ -3,7 +3,7 @@ package ws
 // OptFn client functional options
 type OptFn func(*options)
 
-func newDefaultOPts() options {
+func newDefaultOpts() options {
 	return options{}
 }
 
